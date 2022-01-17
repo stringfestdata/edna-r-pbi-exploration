@@ -1,4 +1,4 @@
-# Using R in Power BI: An Exploration (Enterprise DNA)
+# Using R in Power BI: An Exploration (Enterprise DNA) 
 
 Follow along with the demos by clicking below buttons:
 
