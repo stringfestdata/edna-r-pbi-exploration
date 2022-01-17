@@ -1,7 +1,7 @@
 channels:
   - conda-forge
 dependencies:
-  - r-base
+  - r-base=3.6
   - r-tidyverse
   - r-psych
   - pandas==1.1.1  
