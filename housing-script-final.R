@@ -18,11 +18,6 @@ skim(housing)
 # Any questions? Get the documentation
 ?skim
 
-# Go ahead and try this on
-# install.packages('Computers')
-library(Ecdat)
-Computers
-
 # Visualize relationships b/w numeric variables
 library(tidyverse)
 library(GGally)
@@ -38,26 +33,31 @@ housing %>%
   ggpairs(aes(color=prefarea))
 
 # Now to modeling
-library(tidymodels)
-
-housing_lm <- lm(price ~ lotsize + prefarea, data = housing)
+housing_lm <- lm(price ~ lotsize, data = housing)
 summary(housing_lm)
 
-# install.packages('report')
-library(report)
-report(housing_lm)
-
-library(modelr)
+# Predict values
+library(tidymodels)
 housing_lm_tidy <- tidy(housing_lm)
 
 housing_pred <- add_predictions(housing, housing_lm)
-View(housing)
+head(housing_pred)
 
 library(ggplot2)
 ggplot(data = housing_pred, aes(y=price, x=lotsize, color=prefarea)) +
   geom_point() +
   geom_smooth(method='lm')
 
-# Save this to a special RDS file
-saveRDS(housing_lm_tidy, "housing_lm_tidy.rds")
-housing_lm_tidy
+# Expand the predicted values
+lotsize <- seq(min(housing$lotsize),max(housing$lotsize), by=500)
+lotsize
+
+housing_pred_grid <- expand.grid(lotsize = lotsize)
+dim(pred_grid)
+
+housing_pred_grid$pred <-predict(housing_lm, new = pred_grid)
+View(pred_grid)
+
+saveRDS(housing_pred, "housing_pred.rds") # The actual data 
+saveRDS(housing_pred_grid, "housing_pred_grid.rds") # The expanded grid
+
